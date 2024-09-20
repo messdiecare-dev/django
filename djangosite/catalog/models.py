@@ -21,11 +21,26 @@ class Book(models.Model):
     """
 
     title = models.CharField(max_length=150)
-    author = models.ForeignKey("Author", on_deletete = models.SET_NULL, null=True)
+    author = models.ForeignKey("Author", on_delete = models.SET_NULL, null=True)
+
+    book_langs = (
+        ("en", "English"),
+        ("uk", "Ukrainian"),
+        ("ru", "Russian"),
+        ("fr", "French"),
+        ("gr", "Germanian"),
+        ("it", "Italian"),
+        ("sp", "Spanish"),
+        ("gr", "Greek"),
+        ("sw", "Sweden"),
+        ("ar", "Arabian")
+    )
+    language = models.CharField(max_length=2, choices = book_langs, blank=True, help_text="Choose language the book is written")
 
     summary = models.TextField(max_length=1500, help_text = "Enter a brief summary (description) of a book (it's annotation)")
     isbn = models.CharField("ISBN", max_length=13, help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
-    genre = models. ManyToManyField(Genre, help_text="Select a genre for the book")
+    genre = models.ManyToManyField(Genre, help_text="Select a genre for the book")
+    
 
     def __str__(self):
         return self.title
@@ -47,6 +62,20 @@ class BookInstance(models.Model):
     )
 
     status = models.CharField(choices=loan_status, blank=True, max_length=1, default="m", help_text="Book availability")
+
+    book_langs = (
+        ("en", "English"),
+        ("uk", "Ukrainian"),
+        ("ru", "Russian"),
+        ("fr", "French"),
+        ("gr", "Germanian"),
+        ("it", "Italian"),
+        ("sp", "Spanish"),
+        ("gr", "Greek"),
+        ("sw", "Sweden"),
+        ("ar", "Arabian")
+    )
+    language = models.CharField(max_length=2, choices = book_langs, blank=True, help_text="Choose language the book is written")
 
     class Meta:
         ordering = ["due_back"]
